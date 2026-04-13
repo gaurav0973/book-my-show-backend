@@ -104,7 +104,7 @@ export const refreshService = async (token: string) => {
     return { accessToken: newAccessToken };
     };
 
-    export const logoutService = async (userId: number) => {
+export const logoutService = async (userId: number) => {
     const sql = "UPDATE users SET refresh_token = NULL WHERE id = $1";
     await pool.query(sql, [userId]);
 };
