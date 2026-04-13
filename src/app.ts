@@ -1,6 +1,6 @@
 import express from "express"
 import authRouter from "./module/auth/auth.routes"
-import ticketRouter from "./module/ticket-booking/ticket.routes"
+import ticketRouter from "./module/booking/ticket.routes"
 
 const app = express()
 
