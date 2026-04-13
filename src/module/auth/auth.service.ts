@@ -97,3 +97,15 @@ export const logoutService = async(userId: number)=> {
     const sql = "UPDATE users SET refresh_token = NULL WHERE id = $1"
     await pool.query(sql, [userId])
 }
+
+export const getUserService = async(userId: number) => {
+    const sql = "SELECT * FROM users WHERE id = $1"
+    const row = await pool.query(sql, [userId])
+    if(!row){
+        throw ApiError.internal("Failed to fetch user details")
+    }
+    if(row?.rowCount ?? 0 === 0){
+        throw ApiError.notFound("User not found")
+    }
+    return row.rows[0]
+}

@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { loginService, logoutService, registerService } from "./auth.service";
+import { getUserService, loginService, logoutService, refreshService, registerService } from "./auth.service";
 import ApiResponse from "../../shared/api-responce/api-responce";
 import ApiError from "../../shared/api-responce/api-errors";
 
@@ -25,14 +25,22 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 export const refreshUser = async (req: Request, res: Response) => {
   const token = req.cookies?.refreshToken;
+  const { accessToken } = await refreshService(token);
+  return ApiResponse.ok(res, "Access token refreshed successfully", { accessToken });
 };
 export const logoutUser = async (req: Request, res: Response) => {
   if (!req.user) {
     throw ApiError.unauthorised("User is not authenticated");
   }
-  
+
   await logoutService(req.user.id);
   res.clearCookie("refreshToken");
   ApiResponse.ok(res, "User logged out successfully");
 };
-export const getUser = async (req: Request, res: Response) => {};
+export const getUser = async (req: Request, res: Response) => {
+  if (!req.user) {
+    throw ApiError.unauthorised("User is not authenticated");
+  }
+  const user = await getUserService(req.user.id);
+  return ApiResponse.ok(res, "User details fetched successfully", user);
+};
