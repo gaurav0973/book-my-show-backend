@@ -1,23 +1,32 @@
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
+export interface JwtPayload {
+    id: number;
+}
 
-// password hashing
-export const generateHashedToken = async(textPassword: string) => {
+// Password hashing
+export const generateHashedPasswordToken = async(textPassword: string) => {
     return await bcrypt.hash(textPassword, 10)
 }
-export const verifyPasswordToken = async(token: string, textPassword: string) => {
+export const verifyHashedPasswordToken = async(token: string, textPassword: string) => {
     return await bcrypt.compare(textPassword, token)
+}
+
+// refresh token hashing
+export const generateRefreshTokenHash = (textToken: string) => {
+    return crypto.createHash("sha256").update(textToken).digest("hex")
 }
 
 
 // JWT token for authentication and authorization
-export const generateAccessToken = (payload: any)=>{
+export const generateAccessToken = (payload: JwtPayload)=>{
     return jwt.sign(payload, process.env.JWT_ACCESS_KEY_SECRET!, {expiresIn:"15m"})
 }
 export const verifyAccessToken = (token: string) => {
     return jwt.verify(token, process.env.JWT_ACCESS_KEY_SECRET!)
 }
-export const generateRefreshToken = (payload: any) => {
+export const generateRefreshToken = (payload: JwtPayload) => {
     return jwt.sign(payload, process.env.JWT_REFRESH_KEY_SECRET!, { expiresIn: "1d" })
 }
 export const verifyRefreshToken = (token: string) => {
