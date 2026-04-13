@@ -24,6 +24,9 @@ class ApiError extends Error {
     static conflict(message: string = "Conflict - Data already exists"): ApiError {
         return new ApiError(409, message);
     }
+    static internal(message: string = "Internal Server Error"): ApiError {
+        return new ApiError(500, message);
+    }
 }
 
 export default ApiError;
