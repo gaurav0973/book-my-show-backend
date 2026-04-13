@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "bun --watch index.ts",
     "db:up": "docker-compose up -d",
-    "db:down": "docker-compose down"
+    "db:down": "docker-compose down",
+    "db:migrate": "bun run scripts/migrate.ts",
+    "db:setup": "bun run db:up && bun run db:migrate"
   },
   "devDependencies": {
     "@types/bun": "latest",

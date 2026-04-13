@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+
+    name VARCHAR(120) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+
+    refresh_token TEXT,
+
+    created_at TIMESTAMP  NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP  NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS bookings (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+
+    movie_name VARCHAR(200) NOT NULL,
+
+    seats INTEGER NOT NULL CHECK (seats > 0),
+    is_booked BOOLEAN NOT NULL DEFAULT FALSE,
+
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);

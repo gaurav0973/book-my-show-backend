@@ -1,3 +1,16 @@
 {
-  "js/ts.tsdk.path": "node_modules\\typescript\\lib"
+  "js/ts.tsdk.path": "node_modules\\typescript\\lib",
+  "sqltools.connections": [
+    {
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "bookmyshow",
+      "database": "booking_db",
+      "username": "postgres",
+      "password": "postgres"
+    }
+  ]
 }
