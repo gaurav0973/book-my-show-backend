@@ -1,7 +1,8 @@
 import { Router } from "express"
 import { getUser, loginUser, logoutUser, refreshUser, registerUser } from "./auth.controller"
-import { validateRequest } from "@/shared/middleware/request.middleware"
+import { validateRequest } from "../../shared/middleware/request.middleware"
 import { LoginSchema, RegisterSchema } from "./auth.model"
+import { isLoggedInUser } from "./auth.middleware"
 
 
 const authRouter = Router()
@@ -9,8 +10,8 @@ const authRouter = Router()
 authRouter.post("/register",validateRequest(RegisterSchema), registerUser)
 authRouter.post("/login", validateRequest(LoginSchema), loginUser)
 authRouter.post("/refresh-token", refreshUser)
-authRouter.post("/logout", logoutUser)
-authRouter.get("/me", getUser)
+authRouter.post("/logout", isLoggedInUser, logoutUser)
+authRouter.get("/me", isLoggedInUser, getUser)
 
 
 export default authRouter

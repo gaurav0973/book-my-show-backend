@@ -1,7 +1,7 @@
-import pool from "@/shared/config/db";
+import pool from "../../shared/config/db";
 import type { LoginType, RegisterType } from "./auth.model";
-import ApiError from "@/shared/api-responce/api-errors";
-import { generateAccessToken, generateHashedPasswordToken, generateRefreshToken, generateRefreshTokenHash, verifyHashedPasswordToken, verifyRefreshToken, type JwtPayload} from "@/shared/utils/tokens";
+import ApiError from "../../shared/api-responce/api-errors";
+import { generateAccessToken, generateHashedPasswordToken, generateRefreshToken, generateRefreshTokenHash, verifyHashedPasswordToken, verifyRefreshToken, type JwtPayload} from "../../shared/utils/tokens";
 
 export const registerService = async ({name, email, password}: RegisterType) => {
         const sql = "SELECT email FROM users WHERE email = $1"
@@ -90,4 +90,10 @@ export const refreshService = async (token:string) => {
 
     return { accessToken: newAccessToken }
 
+}
+
+
+export const logoutService = async(userId: number)=> {
+    const sql = "UPDATE users SET refresh_token = NULL WHERE id = $1"
+    await pool.query(sql, [userId])
 }
