@@ -1,11 +1,17 @@
 import app from "@/app"
+import pool from "@/shared/config/db";
 
 const PORT = process.env.PORT!
 
 async function startServer(){
+    await pool.connect()
+    console.log("Connected to the database successfully")
     app.listen(PORT, ()=>{
         console.log("Server is running at : ", PORT)
     })
 }
 
-startServer()
+startServer().catch((err)=>{
+    console.error("Failed to start server: ", err)
+    process.exit(1)
+})
