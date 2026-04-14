@@ -11,15 +11,15 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP  NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS bookings (
+CREATE TABLE IF NOT EXISTS seats (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-
-    movie_name VARCHAR(200) NOT NULL,
-
-    seats INTEGER NOT NULL CHECK (seats > 0),
-    is_booked BOOLEAN NOT NULL DEFAULT FALSE,
-
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+    name VARCHAR(255),
+    is_booked BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
+
+
+INSERT INTO seats (is_booked)
+SELECT FALSE FROM generate_series(1, 20);
+

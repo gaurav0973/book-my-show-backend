@@ -1,13 +1,17 @@
-import express from "express"
-import { Router } from "express"
+import { bookSeatController, getSeatsController } from "./ticket.controller";
+import { Router } from "express";
+import { isLoggedInUser } from "../auth/auth.middleware";
+import { validateRequestParams } from "../../shared/middleware/request.middleware";
+import { BookingSeatParamsSchema } from "./ticket.model";
 
-const ticketRouter = Router()
+const ticketRouter = Router();
 
-// get all seats
-// ticketRouter.get("/seats")
+ticketRouter.get("/seats", getSeatsController);
+ticketRouter.put(
+    "/:id/:name",
+    isLoggedInUser,
+    validateRequestParams(BookingSeatParamsSchema),
+    bookSeatController as any,
+);
 
-//book a seat give the seatId and your name
-// ticketRouter.put("/:id/:name")
-
-
-export default ticketRouter
+export default ticketRouter;

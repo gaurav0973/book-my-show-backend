@@ -17,3 +17,18 @@ export function validateRequest(schema: any) {
         }
     };
 }
+
+export function validateRequestParams(schema: any) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const validationResult = await schema.safeParseAsync(req.params);
+            if (!validationResult.success) {
+                throw ApiError.badRequest(validationResult.error.message);
+            }
+            req.params = validationResult.data;
+            next();
+        } catch (error) {
+            next(error);
+        }
+    };
+}

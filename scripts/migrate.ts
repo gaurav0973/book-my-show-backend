@@ -12,7 +12,7 @@ async function runMigration(): Promise<void> {
     await pool.query(sql);
 
     // file executed 
-    console.log("Migration completed: users and bookings tables are ready.");
+    console.log("Migration completed: users and seats tables are ready.");
 }
 
 runMigration()
